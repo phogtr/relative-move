@@ -7,6 +7,102 @@
     "vscode": "^1.90.0"
   },
   "main": "./out/main.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "relative-move.readInput",
+        "title": "Read input"
+      },
+      {
+        "command": "relative-move.moveUp",
+        "title": "Move up by"
+      },
+      {
+        "command": "relative-move.moveDown",
+        "title": "Move down by"
+      },
+      {
+        "command": "relative-move.cancelReadInput",
+        "title": "Cancel read input"
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "ctrl+r",
+        "command": "relative-move.readInput"
+      },
+      {
+        "key": "escape",
+        "command": "relative-move.cancelReadInput",
+        "when": "editorTextFocus && relativeMoveInputRead"
+      },
+      {
+        "key": "ctrl+c",
+        "command": "relative-move.cancelReadInput",
+        "when": "editorTextFocus && relativeMoveInputRead"
+      },
+      {
+        "key": "w",
+        "command": "relative-move.moveUp",
+        "when": "editorTextFocus && relativeMoveInputRead"
+      },
+      {
+        "key": "s",
+        "command": "relative-move.moveDown",
+        "when": "editorTextFocus && relativeMoveInputRead"
+      },
+      {
+        "key": "0",
+        "command": "relative-move.type0",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "1",
+        "command": "relative-move.type1",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "2",
+        "command": "relative-move.type2",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "3",
+        "command": "relative-move.type3",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "4",
+        "command": "relative-move.type4",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "5",
+        "command": "relative-move.type5",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "6",
+        "command": "relative-move.type6",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "7",
+        "command": "relative-move.type7",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "8",
+        "command": "relative-move.type8",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "9",
+        "command": "relative-move.type9",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./"
