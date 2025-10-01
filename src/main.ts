@@ -2,8 +2,8 @@ import * as vscode from "vscode";
 
 const WHEN_CMD = "relativeMoveInputRead";
 
-const READ_CMD = "relative-move.readInput";
-const SELECT_CMD = "relative-move.readAndSelectInput";
+const MOVE_CMD = "relative-move.moveInput";
+const SELECT_CMD = "relative-move.moveAndSelectInput";
 
 const CANCEL_READ_CMD = "relative-move.cancelReadInput";
 const MOVE_UP_CMD = "relative-move.moveUp";
@@ -19,7 +19,7 @@ let isInput = false;
 let isSelect = false;
 let isStatus: vscode.StatusBarItem;
 
-function status(mode: Mode | null) {
+function updateStatus(mode: Mode | null) {
   if (!isStatus) return;
 
   if (isInput || isSelect) {
@@ -51,11 +51,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   // only move
   context.subscriptions.push(
-    vscode.commands.registerCommand(READ_CMD, () => {
+    vscode.commands.registerCommand(MOVE_CMD, () => {
       number = "";
       isInput = true;
       isSelect = false;
-      status(Mode.move);
+      updateStatus(Mode.move);
       vscode.commands.executeCommand("setContext", WHEN_CMD, true);
     })
   );
@@ -66,7 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
       number = "";
       isInput = false;
       isSelect = true;
-      status(Mode.select);
+      updateStatus(Mode.select);
       vscode.commands.executeCommand("setContext", WHEN_CMD, true);
     })
   );
@@ -76,7 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.registerCommand(`relative-move.type${i}`, () => {
         if (isInput || isSelect) {
           number += i.toString();
-          status(isSelect ? Mode.select : Mode.move);
+          updateStatus(isSelect ? Mode.select : Mode.move);
         } else {
           vscode.commands.executeCommand("default:type", {
             text: i.toString(),
@@ -106,7 +106,7 @@ function deactivate() {
   number = "";
   isInput = false;
   isSelect = false;
-  status(null);
+  updateStatus(null);
 
   vscode.commands.executeCommand("setContext", WHEN_CMD, false);
 }

@@ -10,8 +10,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "relative-move.readInput",
-        "title": "Read input"
+        "command": "relative-move.moveInput",
+        "title": "Read input and move"
+      },
+      {
+        "command": "relative-move.moveAndSelectInput",
+        "title": "Read input, move, and select"
       },
       {
         "command": "relative-move.moveUp",
@@ -29,11 +33,11 @@
     "keybindings": [
       {
         "key": "ctrl+r",
-        "command": "relative-move.readInput"
+        "command": "relative-move.moveInput"
       },
       {
         "key": "ctrl+shift+r",
-        "command": "relative-move.readAndSelectInput"
+        "command": "relative-move.moveAndSelectInput"
       },
       {
         "key": "escape",
