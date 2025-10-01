@@ -3,30 +3,37 @@ import * as vscode from "vscode";
 const WHEN_CMD = "relativeMoveInputRead";
 
 const READ_CMD = "relative-move.readInput";
+const SELECT_CMD = "relative-move.readAndSelectInput";
+
 const CANCEL_READ_CMD = "relative-move.cancelReadInput";
 const MOVE_UP_CMD = "relative-move.moveUp";
 const MOVE_DOWN_CMD = "relative-move.moveDown";
 
+enum Mode {
+  move = "Move",
+  select = "Select",
+}
+
 let number = "";
 let isInput = false;
+let isSelect = false;
 let isStatus: vscode.StatusBarItem;
 
-function status() {
+function status(mode: Mode | null) {
   if (!isStatus) return;
 
-  if (isInput) {
-    isStatus.text = `Move: ${number || "…"}`;
+  if (isInput || isSelect) {
+    isStatus.text = `${mode}: ${number || "…"}`;
     isStatus.show();
   } else {
     isStatus.hide();
   }
 }
 
-async function moveCursor(direction: "up" | "down") {
+async function moveCursor(direction: "up" | "down", withSelect: boolean) {
   const count = parseInt(number || "1", 10);
-  number = "";
-  isInput = false;
-  status();
+
+  deactivate(); // reset after cursor moved
 
   vscode.commands.executeCommand("setContext", WHEN_CMD, false);
 
@@ -34,31 +41,42 @@ async function moveCursor(direction: "up" | "down") {
     to: direction,
     by: "line",
     value: count,
+    select: withSelect,
   });
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  isStatus = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Left,
-    100
-  );
+  isStatus = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
   context.subscriptions.push(isStatus);
 
+  // only move
   context.subscriptions.push(
     vscode.commands.registerCommand(READ_CMD, () => {
       number = "";
       isInput = true;
-      status();
-      vscode.commands.executeCommand("setContext", WHEN_CMD, isInput);
+      isSelect = false;
+      status(Mode.move);
+      vscode.commands.executeCommand("setContext", WHEN_CMD, true);
+    })
+  );
+
+  // move and select
+  context.subscriptions.push(
+    vscode.commands.registerCommand(SELECT_CMD, () => {
+      number = "";
+      isInput = false;
+      isSelect = true;
+      status(Mode.select);
+      vscode.commands.executeCommand("setContext", WHEN_CMD, true);
     })
   );
 
   for (let i = 0; i <= 9; i++) {
     context.subscriptions.push(
       vscode.commands.registerCommand(`relative-move.type${i}`, () => {
-        if (isInput) {
+        if (isInput || isSelect) {
           number += i.toString();
-          status();
+          status(isSelect ? Mode.select : Mode.move);
         } else {
           vscode.commands.executeCommand("default:type", {
             text: i.toString(),
@@ -69,10 +87,14 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(MOVE_UP_CMD, () => moveCursor("up"))
+    vscode.commands.registerCommand(MOVE_UP_CMD, () =>
+      moveCursor("up", isSelect)
+    )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand(MOVE_DOWN_CMD, () => moveCursor("down"))
+    vscode.commands.registerCommand(MOVE_DOWN_CMD, () =>
+      moveCursor("down", isSelect)
+    )
   );
 
   context.subscriptions.push(
@@ -81,11 +103,10 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function deactivate() {
-  if (!isInput) return;
-
   number = "";
   isInput = false;
-  status();
+  isSelect = false;
+  status(null);
 
   vscode.commands.executeCommand("setContext", WHEN_CMD, false);
 }

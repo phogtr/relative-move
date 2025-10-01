@@ -32,6 +32,10 @@
         "command": "relative-move.readInput"
       },
       {
+        "key": "ctrl+shift+r",
+        "command": "relative-move.readAndSelectInput"
+      },
+      {
         "key": "escape",
         "command": "relative-move.cancelReadInput",
         "when": "editorTextFocus && relativeMoveInputRead"
