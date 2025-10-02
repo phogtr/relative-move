@@ -19,32 +19,6 @@ let isInput = false;
 let isSelect = false;
 let isStatus: vscode.StatusBarItem;
 
-function updateStatus(mode: Mode | null) {
-  if (!isStatus) return;
-
-  if (isInput || isSelect) {
-    isStatus.text = `${mode}: ${number || "…"}`;
-    isStatus.show();
-  } else {
-    isStatus.hide();
-  }
-}
-
-async function moveCursor(direction: "up" | "down", withSelect: boolean) {
-  const count = parseInt(number || "1", 10);
-
-  deactivate(); // reset after cursor moved
-
-  vscode.commands.executeCommand("setContext", WHEN_CMD, false);
-
-  await vscode.commands.executeCommand("cursorMove", {
-    to: direction,
-    by: "line",
-    value: withSelect ? count + 1 : count,
-    select: withSelect,
-  });
-}
-
 export function activate(context: vscode.ExtensionContext) {
   isStatus = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
   context.subscriptions.push(isStatus);
@@ -100,6 +74,32 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(CANCEL_READ_CMD, () => deactivate())
   );
+}
+
+function updateStatus(mode: Mode | null) {
+  if (!isStatus) return;
+
+  if (isInput || isSelect) {
+    isStatus.text = `${mode}: ${number || "…"}`;
+    isStatus.show();
+  } else {
+    isStatus.hide();
+  }
+}
+
+async function moveCursor(direction: "up" | "down", withSelect: boolean) {
+  const count = parseInt(number || "1", 10);
+
+  deactivate(); // reset after cursor moved
+
+  vscode.commands.executeCommand("setContext", WHEN_CMD, false);
+
+  await vscode.commands.executeCommand("cursorMove", {
+    to: direction,
+    by: "line",
+    value: withSelect ? count + 1 : count,
+    select: withSelect,
+  });
 }
 
 function deactivate() {
