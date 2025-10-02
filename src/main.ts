@@ -40,7 +40,7 @@ async function moveCursor(direction: "up" | "down", withSelect: boolean) {
   await vscode.commands.executeCommand("cursorMove", {
     to: direction,
     by: "line",
-    value: count,
+    value: withSelect ? count + 1 : count,
     select: withSelect,
   });
 }
