@@ -3,6 +3,14 @@
   "displayName": "relative-move",
   "description": "Move cursor up or down by relative lines after a shortcut-key",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phogtr/relative-move.git"
+  },
+  "bugs": {
+    "url": "https://github.com/phogtr/relative-move/issues"
+  },
+  "author": "phogtr",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -113,10 +121,12 @@
   },
   "scripts": {
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
   },
   "devDependencies": {
     "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.6.2",
     "typescript": "^5.6.0"
   }
 }
