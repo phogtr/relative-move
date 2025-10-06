@@ -2,7 +2,7 @@
   "name": "relative-move",
   "displayName": "relative-move",
   "description": "Move cursor up or down by relative lines after a shortcut-key",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/phogtr/relative-move.git"
@@ -36,6 +36,46 @@
       {
         "command": "relative-move.cancelReadInput",
         "title": "Cancel read input"
+      },
+      {
+        "command": "relative-move.type0",
+        "title": "To be able to register the input '0' when activate the extension"
+      },
+      {
+        "command": "relative-move.type1",
+        "title": "To be able to register the input '1' when activate the extension"
+      },
+      {
+        "command": "relative-move.type2",
+        "title": "To be able to register the input '2' when activate the extension"
+      },
+      {
+        "command": "relative-move.type3",
+        "title": "To be able to register the input '3' when activate the extension"
+      },
+      {
+        "command": "relative-move.type4",
+        "title": "To be able to register the input '4' when activate the extension"
+      },
+      {
+        "command": "relative-move.type5",
+        "title": "To be able to register the input '5' when activate the extension"
+      },
+      {
+        "command": "relative-move.type6",
+        "title": "To be able to register the input '6' when activate the extension"
+      },
+      {
+        "command": "relative-move.type7",
+        "title": "To be able to register the input '7' when activate the extension"
+      },
+      {
+        "command": "relative-move.type8",
+        "title": "To be able to register the input '8' when activate the extension"
+      },
+      {
+        "command": "relative-move.type9",
+        "title": "To be able to register the input '9' when activate the extension"
       }
     ],
     "keybindings": [
